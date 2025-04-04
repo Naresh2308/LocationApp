@@ -6,12 +6,15 @@ import {
   TouchableOpacity,
   TextInput,
   ImageBackground,
+  Alert
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { RootStackParamList } from "./index";
 import { Ionicons } from "@expo/vector-icons"; // icon for eye toggle
 import { MaterialIcons } from "@expo/vector-icons";
+import supabase  from "./config/supabase"; // Adjust path as needed
+
 
 
 type NavigationProp = NativeStackNavigationProp<RootStackParamList, "RegisterPage">;
@@ -29,26 +32,36 @@ const RegisterPage = () =>  {
     return /\S+@\S+\.\S+/.test(email);
   };
 
-  const handleRegister = async() => {
+  const handleRegister = async () => {
     if (!name || !email || !password) {
       setError("Please fill out all fields.");
       return;
     }
-
+  
     if (!isValidEmail(email)) {
       setError("Please enter a valid email address.");
       return;
     }
-
-
-
-
-
-    setError("");
-    console.log("Registered:", { name, email });
-
-    navigation.navigate('LoginPage');
-    // Proceed with registration or navigation
+  
+    try {
+      const { data, error: insertError } = await supabase
+        .from('users') // Your Supabase table name
+        .insert([{ name, email, password }]); // Consider hashing password before storing
+  
+      if (insertError) {
+        console.error("Insert Error:", insertError.message);
+        setError("Registration failed. Please try again.");
+        return;
+      }
+  
+      console.log("Registered:", { name, email, password });
+      Alert.alert("Registered Succesfully.")
+      setError("");
+      navigation.navigate("LoginPage");
+    } catch (err) {
+      console.error("Unexpected Error:", err);
+      setError("Something went wrong.");
+    }
   };
 
   return (

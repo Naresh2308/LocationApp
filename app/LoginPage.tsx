@@ -6,11 +6,13 @@ import {
   TouchableOpacity,
   TextInput,
   ImageBackground,
+  Alert
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { RootStackParamList } from "./index";
 import { Ionicons } from "@expo/vector-icons"; // icon for eye toggle
+import supabase from "./config/supabase";
 
 type NavigationProp = NativeStackNavigationProp<RootStackParamList, "LoginPage">;
 
@@ -26,21 +28,53 @@ const LoginPage = () => {
     return /\S+@\S+\.\S+/.test(email);
   };
 
-  const handleLogin = () => {
+  const handleLogin = async () => {
     if (!email || !password) {
       setError("Please fill out all fields.");
       return;
     }
-
+  
     if (!isValidEmail(email)) {
       setError("Please enter a valid email address.");
       return;
     }
-
-    setError("");
-    console.log("Logged In:", { email });
-    // Proceed with login or navigation
-    // navigation.navigate("HomePage");
+  
+    try {
+      // Query Supabase for the user with this email
+      const { data, error } = await supabase
+        .from("users") // Your Supabase table name
+        .select("*")
+        .eq("email", email)
+        .single(); // Expecting a single user
+  
+      if (error) {
+        console.error("Supabase Error:", error.message);
+        setError("Login failed. Please try again.");
+        return;
+      }
+  
+      if (!data) {
+        setError("User not found. Please register first.");
+        return;
+      }
+  
+      // For security, check if passwords match (consider hashing passwords)
+      if (data.password !== password) {
+        setError("Incorrect password. Please try again.");
+        return;
+      }
+  
+      console.log("Logged In:", data);
+      setError("");
+      
+      // Navigate to home page or store user session
+      Alert.alert("Logged In Successfully");
+    //   navigation.navigate("HomePage");
+  
+    } catch (err) {
+      console.error("Unexpected Error:", err);
+      setError("Something went wrong.");
+    }
   };
 
   return (
