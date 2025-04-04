@@ -139,4 +139,5 @@ const styles = StyleSheet.create({
   },
 });
 
+
 export default LandingPage;
