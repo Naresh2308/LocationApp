@@ -8,17 +8,13 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { NavigationContainer } from "@react-navigation/native";
 import { Header } from "react-native/Libraries/NewAppScreen";
 import LandingPage from "./LandingPage";
+import RegisterPage from "./RegisterPage";
+import LoginPage from "./LoginPage";
 
 export type RootStackParamList = {
   LandingPage: undefined;
-  PhoneNumberScreen: undefined;
-  PANInputScreen: undefined;
-  OTPScreen: undefined;
-  VerifiedScreen: undefined;
-  Dashboard: undefined;
-  MutualFundsPage: undefined;
-  StockPortfolio: undefined;
-  DetailedAnalysis: undefined;
+  RegisterPage: undefined;
+  LoginPage: undefined;
 };
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -28,6 +24,8 @@ export default function App() {
   return (
     <Stack.Navigator initialRouteName="LandingPage">
       <Stack.Screen name="LandingPage" component={LandingPage} options={{headerShown:false}} />
+      <Stack.Screen name="RegisterPage" component={RegisterPage} options={{headerShown:false}}/>
+      <Stack.Screen name="LoginPage" component={LoginPage} options={{headerShown:false}}/>
       {/* <Stack.Screen name="PhoneNumberScreen" component={PhoneNumberScreen} options={{headerShown:false}} />
       <Stack.Screen name="PANInputScreen" component={PANInputScreen} options={{headerShown:false}}/>
       <Stack.Screen name="OTPScreen" component={OTPScreen} options={{headerShown:false}} />

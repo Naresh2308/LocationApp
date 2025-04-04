@@ -32,7 +32,7 @@ const LandingPage = () => {
       {/* Get Started Button */}
       <TouchableOpacity
         style={styles.button}
-        // onPress={} // Now navigation is typed correctly
+        onPress={()=> navigation.navigate('RegisterPage')} // Now navigation is typed correctly
       >
         <Text style={styles.buttonText}>Get Started</Text>
       </TouchableOpacity>
@@ -83,6 +83,10 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(255, 255, 255, 0.9)', // adjust 0.4 to control brightness
     zIndex: 1,
     alignItems: "center",
+    padding:20,
+    borderRadius: 25,
+    textAlign:"center",
+    marginTop:50
   },
   subtitle: {
     fontSize: 16,
@@ -113,7 +117,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#FFFFFF",
     padding: 20,
     borderRadius: 12,
-    width: "45%",
+    width: "50%",
     alignItems: "center",
     shadowColor: "#000",
     shadowOpacity: 0.1,
@@ -129,7 +133,8 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     color: "#1F2937",
     marginBottom: 5,
-    alignContent:"center"
+    alignContent:"center",
+    textAlign: "center",
   },
   cardSubtitle: {
     fontSize: 14,
