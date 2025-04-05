@@ -69,7 +69,7 @@ const LoginPage = () => {
       
       // Navigate to home page or store user session
       Alert.alert("Logged In Successfully");
-    //   navigation.navigate("HomePage");
+      navigation.navigate("Dashboard");
   
     } catch (err) {
       console.error("Unexpected Error:", err);
